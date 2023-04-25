@@ -1,9 +1,6 @@
 import { useMemo, useState } from "react";
-
-type SelectItem = {
-    value: string;
-    text: string;
-}
+import Select from "./Select";
+import type { SelectItem } from "./Select";
 
 type SelectGroup = SelectItem & {
     relations: SelectItem[]
@@ -23,14 +20,16 @@ export default function LinkedDropdown({ options }: Props) {
     );
 
     const secondOptions = useMemo(
-        () => options.length === 1 ? options[0].relations : options.find(o => o.value === firstValue)?.relations ?? [],
+        () => options.length === 1
+            ? options[0].relations
+            : options.find(o => o.value === firstValue)?.relations ?? [],
         [firstValue, options]
     );
 
     const firstSelection = options.length === 1
         ? options[0].value
         : firstValue;
-    
+
     const secondSelection = secondOptions.length === 1
         ? secondOptions[0].value
         : secondValue;
@@ -49,34 +48,20 @@ export default function LinkedDropdown({ options }: Props) {
     return (
         <div>
             <div>
-                <select
+                <Select
                     value={firstSelection}
+                    options={firstOptions}
                     onChange={handleFirstDDChange}
                     disabled={isFirstDisabled}
-                >
-                    {firstOptions.length !== 1 ? (
-                        <option key='default' value={undefined}>Select</option>
-                    ) : null}
-
-                    {firstOptions.map(o => (
-                        <option key={o.value} value={o.value}>{o.text}</option>
-                    ))}
-                </select>
+                />
             </div>
             <div>
-                <select
+                <Select
                     value={secondSelection}
+                    options={secondOptions}
                     onChange={handleSecondDDChange}
                     disabled={isSecondDisabled}
-                >
-                    {secondOptions.length !== 1 ? (
-                        <option key='default' value={undefined}>Select</option>
-                    ) : null}
-
-                    {secondOptions.map(o => (
-                        <option key={o.value} value={o.value}>{o.text}</option>
-                    ))}
-                </select>
+                />
             </div>
         </div>
     );
