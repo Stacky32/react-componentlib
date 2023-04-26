@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Select from "./Select";
 import type { SelectItem } from "./Select";
 
@@ -8,11 +8,12 @@ type SelectGroup = SelectItem & {
 
 interface Props {
     options: SelectGroup[];
+    onChange?: (a: string | undefined, b: string | undefined) => void;
 }
 
-export default function LinkedDropdown({ options }: Props) {
-    const [firstValue, setFirstValue] = useState<string | undefined>();
-    const [secondValue, setSecondValue] = useState<string | undefined>();
+export default function LinkedDropdown({ options, onChange }: Props) {
+    const [firstValue, setFirstValue] = useState<string | undefined>(undefined);
+    const [secondValue, setSecondValue] = useState<string | undefined>(undefined);
 
     const firstOptions = useMemo<SelectItem[]>(
         () => options.map(o => ({ value: o.value, text: o.text })),
@@ -26,13 +27,23 @@ export default function LinkedDropdown({ options }: Props) {
         [firstValue, options]
     );
 
-    const firstSelection = options.length === 1
-        ? options[0].value
-        : firstValue;
+    const firstSelection = useMemo(() =>
+        options.length === 1
+            ? options[0].value
+            : firstValue,
+        [options, firstValue]
+    );
 
-    const secondSelection = secondOptions.length === 1
-        ? secondOptions[0].value
-        : secondValue;
+    const secondSelection = useMemo(
+        () => secondOptions.length === 1
+            ? secondOptions[0].value
+            : secondValue,
+        [secondOptions, secondValue]
+    );
+
+    useEffect(() => {
+        onChange?.(firstSelection, secondSelection);
+    }, [onChange, firstSelection, secondSelection]);
 
     const isFirstDisabled = firstOptions.length <= 1;
     const isSecondDisabled = secondOptions.length <= 1;

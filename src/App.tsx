@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import './App.css';
 import LinkedDropdown from './components/LinkedDropdown';
 
@@ -39,13 +39,24 @@ export default function App(): ReactElement {
                 { value: '11', text: '11' }
             ]
         }
-
     ]
+
+    const [letter, setLetter] = useState<string | undefined>(undefined);
+    const [number, setNumber] = useState<string | undefined>(undefined);
   
+    function handleDropdownChange(a: string | undefined, b: string | undefined): void {
+        setLetter(a);
+        setNumber(b);
+    }
+
+    const letterDisplay = ddData.find(d => d.value === letter)?.text ?? '';
+    const numberDisplay = ddData.find(d => d.value === letter)?.relations.find(r => r.value === number)?.text ?? '';
+
     return (
-    <div>
-        <h1>Hello</h1>
-        <LinkedDropdown options={ddData} />
-    </div>
-  );
+        <div>
+            <h1>Hello</h1>
+            <p><i>Wow!</i> - you chose {letterDisplay} {numberDisplay}</p>
+            <LinkedDropdown options={ddData} onChange={handleDropdownChange} />
+        </div>
+    );
 }
