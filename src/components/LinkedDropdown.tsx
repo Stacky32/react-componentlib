@@ -8,10 +8,11 @@ type SelectGroup = SelectItem & {
 
 interface Props {
     options: SelectGroup[];
+    labels?: [string | undefined, string | undefined];
     onChange?: (a: string | undefined, b: string | undefined) => void;
 }
 
-export default function LinkedDropdown({ options, onChange }: Props) {
+export default function LinkedDropdown({ options, labels, onChange }: Props) {
     const [firstValue, setFirstValue] = useState<string | undefined>(undefined);
     const [secondValue, setSecondValue] = useState<string | undefined>(undefined);
 
@@ -62,6 +63,7 @@ export default function LinkedDropdown({ options, onChange }: Props) {
                 <Select
                     value={firstSelection}
                     options={firstOptions}
+                    label={labels?.[0]}
                     onChange={handleFirstDDChange}
                     disabled={isFirstDisabled}
                 />
@@ -70,6 +72,7 @@ export default function LinkedDropdown({ options, onChange }: Props) {
                 <Select
                     value={secondSelection}
                     options={secondOptions}
+                    label={labels?.[1]}
                     onChange={handleSecondDDChange}
                     disabled={isSecondDisabled}
                 />

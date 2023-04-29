@@ -56,7 +56,11 @@ export default function App(): ReactElement {
         <div>
             <h1>Hello</h1>
             <p><i>Wow!</i> - you chose {letterDisplay} {numberDisplay}</p>
-            <LinkedDropdown options={ddData} onChange={handleDropdownChange} />
+            <LinkedDropdown
+                options={ddData}
+                labels={['Letter', 'Number']}
+                onChange={handleDropdownChange}
+            />
         </div>
     );
 }
