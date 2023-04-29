@@ -36,7 +36,6 @@ export default function App(): ReactElement {
             text: 'D',
             relations: [
                 { value: '10', text: '10'},
-                { value: '11', text: '11' }
             ]
         }
     ]

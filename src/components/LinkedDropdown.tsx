@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Select from "./Select";
 import type { SelectItem } from "./Select";
 
@@ -24,7 +24,7 @@ export default function LinkedDropdown({ options, labels, onChange }: Props) {
     const secondOptions = useMemo(
         () => options.length === 1
             ? options[0].relations
-            : options.find(o => o.value === firstValue)?.relations ?? [],
+            : options.find(o => o.value.toString() === firstValue?.toString())?.relations ?? [],
         [firstValue, options]
     );
 
@@ -42,7 +42,14 @@ export default function LinkedDropdown({ options, labels, onChange }: Props) {
         [secondOptions, secondValue]
     );
 
+    const isFirstRender = useRef<boolean>(true);
+
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
         onChange?.(firstSelection, secondSelection);
     }, [onChange, firstSelection, secondSelection]);
 
