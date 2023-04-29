@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import Select from "./Select";
 import type { SelectItem } from "./Select";
 
-type SelectGroup = SelectItem & {
+export type SelectGroup = SelectItem & {
     relations: SelectItem[]
 }
 
